@@ -31,13 +31,13 @@
                     </Link>
                 </li>
                 <li class="nav-item">
-                    <Link class="nav-link menu-link" :class="{'active': $page.component.startsWith('Modules/Monitoring') }" href="/monitoring">
-                        <i class='ri-wallet-3-fill'></i>
-                        <span data-key="t-students">Money Remittances</span>
+                    <Link class="nav-link menu-link" :class="{'active': $page.component.startsWith('Modules/Trip') }" href="/trips">
+                        <i class='ri-ship-2-fill'></i>
+                        <span data-key="t-students">Trips</span>
                     </Link>
                 </li>  
                 <li class="nav-item">
-                    <Link class="nav-link menu-link" :class="{'active': $page.component.startsWith('Modules/Monitoring') }" href="/monitoring">
+                    <Link class="nav-link menu-link" :class="{'active': $page.component.startsWith('Modules/Expense') }" href="/expenses">
                         <i class='ri-hand-coin-fill'></i>
                         <span data-key="t-students">Materials and Expenses</span>
                     </Link>

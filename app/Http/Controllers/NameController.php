@@ -67,11 +67,12 @@ class NameController extends Controller
     }
 
     public function search($request){
+        $type = $request->type;
         $data = DefaultResource::collection(
             Name::query()
             ->with('subtype')
-            ->whereHas('type',function ($query){
-                $query->where('name','Person');
+            ->whereHas('type',function ($query) use ($type){
+                $query->where('name',$type);
             })
             ->when($request->keyword, function ($query, $keyword) {
                 $query->where('name','LIKE', "%{$keyword}%");

@@ -1,12 +1,12 @@
 <template>
-    <b-modal v-model="showModal" title="Cash Advanced" header-class="p-3 bg-light" class="v-modal-custom" modal-class="zoomIn" centered no-close-on-backdrop>    
+    <b-modal v-model="showModal" title="New Expense" header-class="p-3 bg-light" class="v-modal-custom" modal-class="zoomIn" centered no-close-on-backdrop>    
         <b-form class="customform mb-2">
             <div class="row customerform">
                 
                 <div class="col-md-12 mt-4">
-                   <form class="app-search d-none d-md-block p-0 mb-2" v-if="!name">
+                   <form class="app-search d-none d-md-block p-0 mb-2">
                         <div class="position-relative">
-                            <input type="text" class="form-control" placeholder="Search Name.." autocomplete="off" id="search-options" />
+                            <input type="text" class="form-control" placeholder="Search Expense" autocomplete="off" id="search-options" />
                             <span class="mdi mdi-magnify search-widget-icon"></span>
                             <span class="mdi mdi-close-circle search-widget-icon search-widget-icon-close d-none" id="search-close-options"></span>
                         </div>
@@ -33,19 +33,22 @@
                             </SimpleBar>
                         </div>
                     </form>
-                    <ul class="list-unstyled mb-0 vstack  gap-3" v-else>
-                        <li>
-                            <div class="d-flex align-items-center">
-                                <div class="flex-shrink-0"><img
-                                        :src="currentUrl+'/images/avatars/avatar.jpg'"
-                                        alt="" class="avatar-sm rounded"></div>
-                                <div class="flex-grow-1 ms-3">
-                                    <h6 class="fs-14 mb-1">{{name.name}}</h6>
-                                    <p class="text-muted mb-0">{{name.subtype.name}}</p>
+                    <template v-if="name">
+                        <hr class="text-muted"/>
+                        <ul class="list-unstyled mb-0 vstack  gap-3">
+                            <li>
+                                <div class="d-flex align-items-center">
+                                    <div class="flex-shrink-0"><img
+                                            :src="currentUrl+'/images/avatars/avatar.jpg'"
+                                            alt="" class="avatar-sm rounded"></div>
+                                    <div class="flex-grow-1 ms-3">
+                                        <h6 class="fs-14 mb-1">{{name.name}}</h6>
+                                        <p class="text-muted mb-0">{{name.subtype.name}}</p>
+                                    </div>
                                 </div>
-                            </div>
-                        </li>
-                    </ul>
+                            </li>
+                        </ul>
+                    </template>
                 </div>
                 <div class="col-sm-12">
                     <hr class="text-muted"/>
@@ -55,6 +58,9 @@
                         <label>Amount: <span v-if="form.errors" v-text="form.errors.amount" class="haveerror"></span></label>
                         <Amount @amount="amount" ref="testing" :readonly="false"/>
                     </div>
+                </div>
+                <div class="col-md-12 mt-2">
+                    <textarea v-model="note" class="form-control" maxlength="225" rows="2" placeholder="Notes.."></textarea>
                 </div>
             </div>
         </b-form>
@@ -79,7 +85,9 @@ export default {
             showModal: false,
             id: '',
             name: '',
+            trip: '',
             type: '',
+            note: '',
             amount1: '',
             form: {},
             names: [],
@@ -121,7 +129,17 @@ export default {
             this.name = '';
             this.amount1 = '';
             this.type = '';
-            this.$refs.testing.empty();
+            this.amount(0);
+            this.editable = false;
+            this.showModal = true;
+        },
+        set(trip) {
+            this.id = '';
+            this.name = '';
+            this.amount1 = '';
+            this.type = '';
+            this.amount(0);
+            this.trip = trip;
             this.editable = false;
             this.showModal = true;
         },
@@ -137,11 +155,13 @@ export default {
             this.form = this.$inertia.form({
                 id: this.id,
                 name_id: this.name.id,
+                trip_id: this.trip.id,
                 amount: this.amount1,
+                note: this.note,
                 editable: this.editable
             })
 
-            this.form.post('/loans',{
+            this.form.post('/expenses',{
                 preserveScroll: true,
                 onSuccess: (response) => {
                     this.hide();
@@ -150,6 +170,8 @@ export default {
         },
         hide(){
             this.$emit('message',true);
+            var searchInput = document.getElementById("search-options");
+            searchInput.value = '';
             this.$refs.testing.empty();
             this.showModal = false;
         },
@@ -163,7 +185,7 @@ export default {
                 params: {
                     keyword: this.keyword,
                     options: 'search',
-                     type: 'Person'
+                    type: 'Expense'
                 }
             })
             .then(response => {

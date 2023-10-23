@@ -13,17 +13,16 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('names', function (Blueprint $table) {
+        Schema::create('tubs', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
-            $table->string('name')->unique();
-            $table->string('role')->nullable();
-            $table->string('contact')->nullable();
+            $table->string('quantity');
+            $table->decimal('amount',12,2);
+            $table->boolean('is_sold');
             $table->integer('type_id')->unsigned()->nullable();
             $table->foreign('type_id')->references('id')->on('dropdowns')->onDelete('cascade');
-            $table->integer('subtype_id')->unsigned()->nullable();
-            $table->foreign('subtype_id')->references('id')->on('dropdowns')->onDelete('cascade');
-            $table->boolean('is_active')->default(1);
+            $table->integer('carrier_id')->unsigned()->nullable();
+            $table->foreign('carrier_id')->references('id')->on('carriers')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -35,6 +34,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('names');
+        Schema::dropIfExists('tubs');
     }
 };

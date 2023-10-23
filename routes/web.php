@@ -17,9 +17,11 @@ Route::get('/', function () {return inertia('Auth/Login'); });
 Route::middleware(['auth'])->group(function () {
     Route::resource('/home', App\Http\Controllers\HomeController::class);
     Route::resource('/transportations', App\Http\Controllers\TransportationController::class);
+    Route::resource('/trips', App\Http\Controllers\TripController::class);
     Route::resource('/names', App\Http\Controllers\NameController::class);
     Route::resource('/loans', App\Http\Controllers\LoanController::class);
     Route::resource('/expenses', App\Http\Controllers\ExpenseController::class);
+    Route::resource('/carriers', App\Http\Controllers\CarrierController::class);
 });
 
 require __DIR__.'/auth.php';

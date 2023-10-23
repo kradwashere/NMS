@@ -1,10 +1,10 @@
 <template>
-    <input type="text" class="form-control test" v-money="money" v-model.lazy="value" :readonly="readonly">
+    <input type="text" class="form-control" :class="size" v-money="money" v-model.lazy="value" :readonly="readonly">
 </template>
 <script>
 import {VMoney} from 'v-money'
 export default {
-    props: ['readonly'],
+    props: ['readonly','size','index'],
     data(){
         return {
             value: 0,
@@ -19,7 +19,11 @@ export default {
     },
     watch: {
         value: function(val){
-            this.$emit('amount',val)
+            if(this.index != null){
+                this.$emit('amount',[val,this.index]);
+            }else{
+                this.$emit('amount',val);
+            }
         }
     },
     methods: {

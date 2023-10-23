@@ -13,12 +13,16 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('expenses', function (Blueprint $table) {
+        Schema::create('trips', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
-            $table->decimal('amount',12,2);
-            $table->integer('name_id')->unsigned()->nullable();
-            $table->foreign('name_id')->references('id')->on('names')->onDelete('cascade');
+            $table->string('code');
+            $table->date('date');
+            $table->longText('note');
+            $table->boolean('has_departed')->default(0);
+            $table->boolean('is_completed')->default(0);
+            $table->integer('boat_id')->unsigned()->nullable();
+            $table->foreign('boat_id')->references('id')->on('names')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -30,6 +34,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('expenses');
+        Schema::dropIfExists('trips');
     }
 };

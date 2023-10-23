@@ -5,22 +5,22 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Expense extends Model
+class Tub extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'id', 'amount', 'name_id', 'trip_id', 'note'
+        'id','quantity','amount','is_sold','type_id','carrier_id'
     ];
 
-    public function name()
+    public function carrier()
     {
-        return $this->belongsTo('App\Models\Name', 'name_id', 'id');
+        return $this->belongsTo('App\Models\Carrier', 'carrier_id', 'id');
     } 
 
-    public function trip()
+    public function type()
     {
-        return $this->belongsTo('App\Models\Trip', 'trip_id', 'id');
+        return $this->belongsTo('App\Models\Dropdown', 'type_id', 'id');
     } 
 
     public function getUpdatedAtAttribute($value)
