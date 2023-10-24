@@ -13,16 +13,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('tubs', function (Blueprint $table) {
+        Schema::create('sales', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
             $table->string('quantity');
             $table->decimal('amount',12,2);
-            $table->boolean('is_sold')->default(0);
-            $table->integer('type_id')->unsigned()->nullable();
-            $table->foreign('type_id')->references('id')->on('names')->onDelete('cascade');
-            $table->integer('carrier_id')->unsigned()->nullable();
-            $table->foreign('carrier_id')->references('id')->on('carriers')->onDelete('cascade');
+            $table->integer('buyer_id')->unsigned()->nullable();
+            $table->foreign('buyer_id')->references('id')->on('names')->onDelete('cascade');
+            $table->integer('tub_id')->unsigned()->nullable();
+            $table->foreign('tub_id')->references('id')->on('tubs')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -34,6 +33,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tubs');
+        Schema::dropIfExists('sales');
     }
 };

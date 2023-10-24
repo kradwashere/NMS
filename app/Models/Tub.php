@@ -20,7 +20,7 @@ class Tub extends Model
 
     public function type()
     {
-        return $this->belongsTo('App\Models\Dropdown', 'type_id', 'id');
+        return $this->belongsTo('App\Models\Name', 'type_id', 'id');
     } 
 
     public function getUpdatedAtAttribute($value)

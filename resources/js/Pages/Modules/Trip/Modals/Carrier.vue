@@ -80,16 +80,16 @@
                                         </b-button>
                                     </td>
                                     <td class="text-center" width="35%">
-                                        <select @change="form.errors[`tubs.${index}.type`] = ''" :style="(form.errors && form.errors[`tubs.${index}.type`]) ? 'color: red':''" v-model="tub.type" class="form-select form-select-sm mt-n1">
+                                        <select @change="check('type',index)" :style="(form.errors && form.errors[`tubs.${index}.type`]) ? 'color: red':''" v-model="tub.type" class="form-select form-select-sm mt-n1">
                                             <option :value="null" disabled>Select fish</option>
                                             <option :value="type.id" v-for="(type,index) in selectedFishes" v-bind:key="index" :disabled="isTypeSelected(type.id)">{{type.name}}</option>
                                         </select>
                                     </td>
                                     <td class="text-center" width="10%">
-                                        <input @input="form.errors[`tubs.${index}.quantity`] = ''" :style="(form.errors && form.errors[`tubs.${index}.quantity`]) ? 'color: red':''" type="text" class="form-control form-control-sm" v-model="tub.quantity" placeholder="Quantity" required>
+                                        <input @change="check('quantity',index)" :style="(form.errors && form.errors[`tubs.${index}.quantity`]) ? 'color: red':''" type="text" class="form-control form-control-sm" v-model="tub.quantity" placeholder="Quantity" required>
                                     </td>
                                     <td class="text-center" width="25%">
-                                        <Amount @input="form.errors[`tubs.${index}.amount`] = ''" :style="(form.errors && form.errors[`tubs.${index}.amount`]) ? 'color: red':''" @amount="handleAmount" :index="index" :size="'form-control-sm'" ref="testing" :readonly="false"/>
+                                        <Amount @change="check('amount',index)" :style="(form.errors && form.errors[`tubs.${index}.amount`]) ? 'color: red':''" @amount="handleAmount" :index="index" :size="'form-control-sm'" ref="testing" :readonly="false"/>
                                         <!-- <input type="text" class="form-control form-control-sm" v-model="tub.amount" placeholder="Amount" required> -->
                                     </td>
                                     <td width="25%" class="text-end">
@@ -157,6 +157,7 @@ export default {
                 id: this.id,
                 trip_id: this.carrier.trip.id,
                 carrier_id: this.carrier.carrier.id,
+                total: this.totalAmount(),
                 tubs: this.carrier.tubs,
                 editable: this.editable
             })
@@ -187,6 +188,20 @@ export default {
         isTypeSelected(typeId) {
             return this.carrier.tubs.slice(0, -1).some(item => item.type === typeId);
         },
+        check(data,index){
+            if(this.form.errors){
+                if(data == 'type'){
+                    this.form.errors[`tubs.${index}.type`] = '';
+                }else if(data == 'quantity'){
+                    this.form.errors[`tubs.${index}.quantity`] = '';
+                }else{
+                    this.form.errors[`tubs.${index}.amount`] = '';
+                }
+            }
+        },
+        totalAmount() {
+            return this.carrier.tubs.reduce((total, item) => total + parseFloat((item.amount*item.quantity)), 0);
+        }
     }
 }
 </script>

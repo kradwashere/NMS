@@ -4,7 +4,7 @@
     <b-row>
         <b-col xxl="12">
             <b-card>
-                <b-card-body style="height: 180px;">
+                <b-card-body style="height: 80px;">
                     <template v-if="trip">
                         <div class="d-flex">
                             <div class="flex-grow-1">
@@ -23,65 +23,6 @@
                                 </div>
                             </div>
                         </div>
-                        <hr class="text-muted"/>
-                        <div class="row mt-4">
-                            <div class="col-sm-6 col-lg-3">
-                                <div class="p-2 border border-dashed rounded">
-                                    <div class="d-flex align-items-center">
-                                        <div class="avatar-sm me-2">
-                                            <div class="avatar-title rounded bg-transparent text-success fs-24"><i
-                                                    class="ri-money-dollar-circle-fill"></i></div>
-                                        </div>
-                                        <div class="flex-grow-1">
-                                            <p class="text-muted mb-1">Total Expenses :</p>
-                                            <h5 class="mb-0">$120.40</h5>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-6 col-lg-3">
-                                <div class="p-2 border border-dashed rounded">
-                                    <div class="d-flex align-items-center">
-                                        <div class="avatar-sm me-2">
-                                            <div class="avatar-title rounded bg-transparent text-success fs-24"><i
-                                                    class="ri-file-copy-2-fill"></i></div>
-                                        </div>
-                                        <div class="flex-grow-1">
-                                            <p class="text-muted mb-1">No. of Orders :</p>
-                                            <h5 class="mb-0">2,234</h5>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-6 col-lg-3">
-                                <div class="p-2 border border-dashed rounded">
-                                    <div class="d-flex align-items-center">
-                                        <div class="avatar-sm me-2">
-                                            <div class="avatar-title rounded bg-transparent text-success fs-24"><i class="ri-stack-fill"></i>
-                                            </div>
-                                        </div>
-                                        <div class="flex-grow-1">
-                                            <p class="text-muted mb-1">Available Stocks :</p>
-                                            <h5 class="mb-0">1,230</h5>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-6 col-lg-3">
-                                <div class="p-2 border border-dashed rounded">
-                                    <div class="d-flex align-items-center">
-                                        <div class="avatar-sm me-2">
-                                            <div class="avatar-title rounded bg-transparent text-success fs-24"><i
-                                                    class="ri-inbox-archive-fill"></i></div>
-                                        </div>
-                                        <div class="flex-grow-1">
-                                            <p class="text-muted mb-1">Total Revenue :</p>
-                                            <h5 class="mb-0">$60,645</h5>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                     </template>
                     <template v-else>
                     </template>
@@ -90,6 +31,26 @@
         </b-col>
 
         <b-col class="col-md-4">
+             <div class="card">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="avatar-sm flex-shrink-0">
+                            <span class="avatar-title bg-light text-primary rounded-circle fs-3">
+                                <i class="ri-hand-coin-fill align-middle"></i>
+                            </span>
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <p class="text-uppercase fw-semibold fs-12 text-muted mb-1">Total Expenses</p>
+                            <h4 class="mb-0">{{formatMoney(total(trip.expenses))}}</h4>
+                        </div>
+                        <div class="flex-shrink-0 align-self-end">
+                            <span class="badge bg-success-subtle text-success">
+                                <i class="ri-arrow-up-s-fill align-middle me-1"></i> 6.24 %
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="card">
                 <div class="card-header align-items-center d-flex">
                     <h5 class="card-title mb-0 flex-grow-1">Expenses</h5>
@@ -112,7 +73,7 @@
                                 </tr>
                             </thead>
                         </table>
-                         <table class="table align-middle table-centered table-nowrap">
+                        <table class="table align-middle table-centered table-nowrap">
                             <tbody>
                                 <tr v-for="(list,index) in trip.expenses" v-bind:key="index" class="fs-11">
                                     <td width="5%">{{index + 1}}</td>
@@ -138,6 +99,26 @@
 
         <b-col class="col-md-4">
             <div class="card">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="avatar-sm flex-shrink-0">
+                            <span class="avatar-title bg-light text-primary rounded-circle fs-3">
+                                <i class="ri-wallet-3-fill align-middle"></i>
+                            </span>
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <p class="text-uppercase fw-semibold fs-12 text-muted mb-1">Merchandise Inventory</p>
+                            <h4 class="mb-0">{{formatMoney(total(trip.carriers))}}</h4>
+                        </div>
+                        <div class="flex-shrink-0 align-self-end">
+                            <span class="badge bg-success-subtle text-success">
+                                <i class="ri-arrow-up-s-fill align-middle me-1"></i> 6.24 %
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
                 <div class="card-header align-items-center d-flex">
                     <h5 class="card-title mb-0 flex-grow-1">Carriers</h5>
                     <div>
@@ -148,13 +129,60 @@
                 </div>
                 <div class="card-body" style="height: calc(100vh - 530px)">
                     <div class="table-responsive table-card">
-                       
+                        <table class="table align-middle table-centered table-nowrap">
+                             <thead class="text-muted table-light fs-11">
+                                <tr>
+                                    <th width="5%">#</th>
+                                    <th width="30%">Carrier</th>
+                                    <th width="28%" class="text-center">Tubs</th>
+                                    <th width="28%" class="text-center">Total</th>
+                                    <th width="9%"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="(list,index) in trip.carriers" v-bind:key="index" class="fs-11">
+                                    <td>{{index + 1}}</td>
+                                    <td>
+                                        <h5 class="fs-12 mb-0 text-dark">{{list.name.name}}</h5>
+                                        <p class="fs-11 text-muted mb-0">{{list.order}} trip</p>
+
+                                    </td>
+                                    <td class="text-center">0 of {{totalCount(list.tubs)}} sold</td>
+                                    <td class="text-center">{{formatMoney(list.total)}} </td>
+                                    <td>
+                                        <button class="btn btn-soft-primary btn-sm ms-0 mt-0 me-9 mb-0" type="button">
+                                            <div class="btn-content"><i class="ri-eye-fill align-bottom"></i></div>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                         </table>
                     </div>
                 </div>
             </div>
         </b-col>
 
         <b-col class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="avatar-sm flex-shrink-0">
+                            <span class="avatar-title bg-light text-primary rounded-circle fs-3">
+                                <i class="ri-shopping-cart-2-fill align-middle"></i>
+                            </span>
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <p class="text-uppercase fw-semibold fs-12 text-muted mb-1">Total Sold</p>
+                            <h4 class="mb-0"> $ <span class="counter-value">2390.68</span></h4>
+                        </div>
+                        <div class="flex-shrink-0 align-self-end">
+                            <span class="badge bg-success-subtle text-success">
+                                <i class="ri-arrow-up-s-fill align-middle me-1"></i> 6.24 %
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="card">
                 <div class="card-header align-items-center d-flex">
                     <h5 class="card-title mb-0 flex-grow-1">Sold</h5>
@@ -166,7 +194,7 @@
                 </div>
                 <div class="card-body" style="height: calc(100vh - 530px)">
                     <div class="table-responsive table-card">
-                        
+
                     </div>
                 </div>
             </div>
@@ -205,6 +233,16 @@ export default {
             let val = (value/1).toFixed(2).replace(',', '.')
             return '₱'+val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
         },
+        totalCount(lists) {
+            return lists.reduce((total, item) => total + parseFloat(item.quantity), 0);
+        },
+        total(lists) {
+            return lists.reduce((total, item) => {
+                const amount = parseFloat((item.amount) ? item.amount : item.total);
+                const quantity = item.quantity ? parseInt(item.quantity) : 1; 
+                return total + (amount * quantity);
+            }, 0);
+        }
     }
 }
 </script>

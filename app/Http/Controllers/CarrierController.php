@@ -18,5 +18,44 @@ class CarrierController extends Controller
             'tubs.*.type' => 'required',
             'tubs.*.quantity' => 'required|integer|min:1',
         ]);
+
+        $data = \DB::transaction(function () use ($request){
+            $count = Carrier::where('trip_id',$request->trip_id)->count();
+            $request['order'] = $this->numberToOrdinal($count+1);
+            $carrier = Carrier::create($request->all());
+            if($carrier){
+                $tubs = $request->tubs;
+                foreach($tubs as $tub){
+                    $data = new Tub;
+                    $data->type_id = $tub['type'];
+                    $data->quantity = $tub['quantity'];
+                    $data->amount = $tub['amount'];
+                    $data->carrier_id = $carrier->id;
+                    $data->save();
+                }
+            }
+        });
+    }
+
+    public function numberToOrdinal($number) {
+        if ($number % 100 >= 11 && $number % 100 <= 13) {
+            $ordinal = $number . 'th';
+        } else {
+            switch ($number % 10) {
+                case 1:
+                    $ordinal = $number . 'st';
+                    break;
+                case 2:
+                    $ordinal = $number . 'nd';
+                    break;
+                case 3:
+                    $ordinal = $number . 'rd';
+                    break;
+                default:
+                    $ordinal = $number . 'th';
+                    break;
+            }
+        }
+        return $ordinal;
     }
 }
