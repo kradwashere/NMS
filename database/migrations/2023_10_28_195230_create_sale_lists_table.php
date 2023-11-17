@@ -13,15 +13,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('expenses', function (Blueprint $table) {
+        Schema::create('sale_lists', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
+            $table->string('quantity');
             $table->decimal('amount',12,2);
-            $table->longText('note');
-            $table->integer('name_id')->unsigned()->index();
-            $table->foreign('name_id')->references('id')->on('names')->onDelete('cascade');
-            $table->integer('trip_id')->unsigned()->index();
-            $table->foreign('trip_id')->references('id')->on('trips')->onDelete('cascade');
+            $table->integer('sale_id')->unsigned()->index();
+            $table->foreign('sale_id')->references('id')->on('sales')->onDelete('cascade');
+            $table->integer('tub_id')->unsigned()->index();
+            $table->foreign('tub_id')->references('id')->on('tubs')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -33,6 +33,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('expenses');
+        Schema::dropIfExists('sale_lists');
     }
 };

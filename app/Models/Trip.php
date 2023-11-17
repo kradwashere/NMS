@@ -28,6 +28,11 @@ class Trip extends Model
         return $this->hasMany('App\Models\Expense', 'trip_id')->orderBy('created_at','DESC');
     } 
 
+    public function sales()
+    {
+        return $this->hasMany('App\Models\Sale', 'trip_id');
+    } 
+
     public function getUpdatedAtAttribute($value)
     {
         return date('M d, Y g:i a', strtotime($value));

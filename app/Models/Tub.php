@@ -23,6 +23,11 @@ class Tub extends Model
         return $this->belongsTo('App\Models\Name', 'type_id', 'id');
     } 
 
+    public function sales()
+    {
+        return $this->hasMany('App\Models\SaleList', 'tub_id');
+    } 
+
     public function getUpdatedAtAttribute($value)
     {
         return date('M d, Y g:i a', strtotime($value));

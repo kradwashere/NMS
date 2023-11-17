@@ -16,12 +16,16 @@ return new class extends Migration
         Schema::create('sales', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
-            $table->string('quantity');
-            $table->decimal('amount',12,2);
-            $table->integer('buyer_id')->unsigned()->nullable();
+            $table->decimal('total',12,2);
+            $table->integer('type_id')->unsigned()->index();
+            $table->foreign('type_id')->references('id')->on('dropdowns')->onDelete('cascade');
+            $table->integer('truck_id')->unsigned()->nullable();
+            $table->foreign('truck_id')->references('id')->on('names')->onDelete('cascade');
+            $table->integer('buyer_id')->unsigned()->index();
             $table->foreign('buyer_id')->references('id')->on('names')->onDelete('cascade');
-            $table->integer('tub_id')->unsigned()->nullable();
-            $table->foreign('tub_id')->references('id')->on('tubs')->onDelete('cascade');
+            $table->integer('trip_id')->unsigned()->index();
+            $table->foreign('trip_id')->references('id')->on('trips')->onDelete('cascade');
+            $table->boolean('is_sold')->default(0);
             $table->timestamps();
         });
     }

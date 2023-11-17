@@ -2,7 +2,27 @@
     <Head title="Dashboard" />
     <PageHeader :title="title" :items="items" />
     <b-row>
-        <b-col xxl="12">
+         <b-col xxl="4">
+             <!-- <b-card>
+                <b-card-body style="height: 80px;">
+                </b-card-body>
+             </b-card> -->
+            <div class="alert alert-info border-dashed" style="height: 113px;" role="alert">
+                <div class="d-flex align-items-center">
+                    <div class="ms-2">
+                       <div class="d-flex justify-content-between">
+                            <div>
+                                <p class="fw-bold text-primary mb-0">TOTAL REVENUE</p>
+                                <h2 class="mt-2 ff-secondary fw-semibold">{{formatMoney(total(trip.expenses))}} </h2>
+                                <p class="mb-0 text-muted"><span class="badge bg-secondary bg-light text-success mb-0"><i
+                                            class="ri-arrow-up-line align-middle"></i> 7.05 % </span> vs. previous month </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </b-col>
+        <b-col xxl="8">
             <b-card>
                 <b-card-body style="height: 80px;">
                     <template v-if="trip">
@@ -30,6 +50,8 @@
             </b-card>
         </b-col>
 
+       
+
         <b-col class="col-md-4">
              <div class="card">
                 <div class="card-body">
@@ -43,11 +65,11 @@
                             <p class="text-uppercase fw-semibold fs-12 text-muted mb-1">Total Expenses</p>
                             <h4 class="mb-0">{{formatMoney(total(trip.expenses))}}</h4>
                         </div>
-                        <div class="flex-shrink-0 align-self-end">
+                        <!-- <div class="flex-shrink-0 align-self-end">
                             <span class="badge bg-success-subtle text-success">
                                 <i class="ri-arrow-up-s-fill align-middle me-1"></i> 6.24 %
                             </span>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </div>
@@ -56,7 +78,7 @@
                     <h5 class="card-title mb-0 flex-grow-1">Expenses</h5>
                     <div>
                         <button class="btn btn-soft-primary btn-sm" type="button">
-                            <div @click="expense()" class="btn-content"> Add Expense </div>
+                            <div @click="viewExpense()" class="btn-content"> Add Expense </div>
                         </button>
                     </div>
                 </div>
@@ -110,11 +132,11 @@
                             <p class="text-uppercase fw-semibold fs-12 text-muted mb-1">Merchandise Inventory</p>
                             <h4 class="mb-0">{{formatMoney(total(trip.carriers))}}</h4>
                         </div>
-                        <div class="flex-shrink-0 align-self-end">
+                        <!-- <div class="flex-shrink-0 align-self-end">
                             <span class="badge bg-success-subtle text-success">
                                 <i class="ri-arrow-up-s-fill align-middle me-1"></i> 6.24 %
                             </span>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </div>
@@ -123,7 +145,7 @@
                     <h5 class="card-title mb-0 flex-grow-1">Carriers</h5>
                     <div>
                         <button class="btn btn-soft-primary btn-sm" type="button">
-                            <div @click="carrier()" class="btn-content"> Create Carrier </div>
+                            <div @click="viewCarrier()" class="btn-content"> Create Carrier </div>
                         </button>
                     </div>
                 </div>
@@ -150,7 +172,7 @@
                                     <td class="text-center">0 of {{totalCount(list.tubs)}} sold</td>
                                     <td class="text-center">{{formatMoney(list.total)}} </td>
                                     <td>
-                                        <button class="btn btn-soft-primary btn-sm ms-0 mt-0 me-9 mb-0" type="button">
+                                        <button @click="showCarrier(list)" class="btn btn-soft-primary btn-sm ms-0 mt-0 me-9 mb-0" type="button">
                                             <div class="btn-content"><i class="ri-eye-fill align-bottom"></i></div>
                                         </button>
                                     </td>
@@ -175,11 +197,11 @@
                             <p class="text-uppercase fw-semibold fs-12 text-muted mb-1">Total Sold</p>
                             <h4 class="mb-0"> $ <span class="counter-value">2390.68</span></h4>
                         </div>
-                        <div class="flex-shrink-0 align-self-end">
+                        <!-- <div class="flex-shrink-0 align-self-end">
                             <span class="badge bg-success-subtle text-success">
                                 <i class="ri-arrow-up-s-fill align-middle me-1"></i> 6.24 %
                             </span>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </div>
@@ -187,8 +209,8 @@
                 <div class="card-header align-items-center d-flex">
                     <h5 class="card-title mb-0 flex-grow-1">Sold</h5>
                     <div>
-                        <button class="btn btn-soft-primary btn-sm" type="button">
-                            <div class="btn-content"> View all </div>
+                        <button @click="viewSales" class="btn btn-soft-primary btn-sm" type="button">
+                            <div class="btn-content"> New Sale </div>
                         </button>
                     </div>
                 </div>
@@ -202,13 +224,17 @@
     </b-row>
     <Expense :types="types" ref="expense"/>
     <Carrier :fishes="fishes" :carriers="carriers" ref="carrier"/>
+    <CarrierShow :trip="trip" ref="carriershow"/>
+    <Sales :types="subtypes" ref="sales"/>
 </template>
 <script>
-import Carrier from '../Trip/Modals/Carrier.vue';
+import Sales from '../Modals/Sales/Create.vue';
+import Carrier from '../Modals/Carrier/Create.vue';
+import CarrierShow from '../Modals/Carrier/View.vue';
 import Expense from '../Expense/Modals/Create.vue';
 import PageHeader from "@/Shared/Components/PageHeader.vue";
 export default {
-    components: { PageHeader, Expense, Carrier },
+    components: { PageHeader, Expense, Carrier, CarrierShow, Sales },
     props: ['trip','dropdowns','carriers','fishes'],
     data() {
         return {
@@ -221,13 +247,22 @@ export default {
         types : function() {
             return this.dropdowns.filter(x => x.is_expense == 1);
         },
+        subtypes : function() {
+            return this.dropdowns.filter(x => x.type == 'Type');
+        },
     },
     methods: {
-        expense(){
+        viewExpense(){
             this.$refs.expense.set(this.trip);
         },
-        carrier(){
+        viewCarrier(){
             this.$refs.carrier.show(this.trip);
+        },
+        showCarrier(data){
+            this.$refs.carriershow.show(data,this.trip.code);
+        },
+        viewSales(){
+            this.$refs.sales.show(this.trip.carriers);
         },
         formatMoney(value) {
             let val = (value/1).toFixed(2).replace(',', '.')

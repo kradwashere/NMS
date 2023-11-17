@@ -21,7 +21,7 @@ return new class extends Migration
             $table->longText('note');
             $table->boolean('has_departed')->default(0);
             $table->boolean('is_completed')->default(0);
-            $table->integer('boat_id')->unsigned()->nullable();
+            $table->integer('boat_id')->unsigned()->index();
             $table->foreign('boat_id')->references('id')->on('names')->onDelete('cascade');
             $table->timestamps();
         });
